@@ -34,6 +34,9 @@ def welcome():
 
 def say_bye():
     print("\nDon't go! I'd like to give you some tips....")
+    print("\t- Remember to have installed gunicorn inside your env project")
+    print("\t- Remember to have installed SuperVisor")
+    print("\t- Remember to have installed nginx")
     print("\t- Please check that port " + params["ext_port"] + " is open")
     print("\t- Remember to restart nginx:")
     print("\t\t 1) sudo systemctl restart nginx.system")
@@ -106,6 +109,11 @@ if __name__ == "__main__":
     print("Reading parameters file...", end="", flush=True)
     params = file_input("flaskapp.par")
     print("\t\t[DONE!]")
+
+    # Check ports redundancy
+    if params["int_port"] == params["ext_port"]:
+        print("\tWARNING!! Your internal port and external port are the same.\n")
+        input("Enter to continue, Ctrl+c to exit... ")
 
     # FILES
     app_name = params['app_name']
@@ -182,21 +190,29 @@ if __name__ == "__main__":
         )
         print("\t\t[DONE!]")
 
-    print("Copying NGINX config file...", end="", flush=True),
-    shutil.copyfile(nginx_conf_file, final_nginx_conf_file)
-    print("\t\t[DONE!]")
-
-    print("Linking NGINX config file...", end="", flush=True),
-    os.symlink(final_nginx_conf_file, final_nginx_conf_file_link)
-    print("\t\t[DONE!]")
-
-    print("Copying SuperVisor config file...", end="", flush=True),
-    shutil.copyfile(supervisor_conf_file, final_supervisor_conf_file)
-    print("\t[DONE!]")
-
-    if params["framework"] == "flask":
-        print("Copying WSGI config file...", end="", flush=True),
-        shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
+    try:
+        print("Copying NGINX config file...", end="", flush=True),
+        shutil.copyfile(nginx_conf_file, final_nginx_conf_file)
         print("\t\t[DONE!]")
 
-    say_bye()
+        print("Linking NGINX config file...", end="", flush=True),
+        os.symlink(final_nginx_conf_file, final_nginx_conf_file_link)
+        print("\t\t[DONE!]")
+
+        print("Copying SuperVisor config file...", end="", flush=True),
+        shutil.copyfile(supervisor_conf_file, final_supervisor_conf_file)
+        print("\t[DONE!]")
+
+        if params["framework"] == "flask":
+            print("Copying WSGI config file...", end="", flush=True),
+            shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
+            print("\t\t[DONE!]")
+    except Exception as e:
+        print("\n\n-----------------------\nAn error ocurred:")
+        if hasattr(e, 'message'):
+            print(e.message)
+        else:
+            print(e)
+        print("-----------------------")
+    finally:
+        say_bye()
