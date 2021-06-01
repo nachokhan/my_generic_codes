@@ -3,6 +3,7 @@
 ##################################
 
 import os
+import sys
 import shutil
 from utils.gernerics import render_file
 
@@ -100,14 +101,25 @@ def check_if_sudo_mode():
 
 if __name__ == "__main__":
 
+    deploy_file = None
+
     welcome()
 
+    if len(sys.argv) != 3:
+        print("Incorrect number of parameters. Use:")
+        print("\nsudo python deploy.sh -f <deply_config_file>")
+        print("\nEx: sudo python deploy.sh -f my_app.deploy\n")
+        exit(2)
+
+    else:
+        deploy_file = sys.argv[2]
+
     print("Checking sudo privileges...", end="", flush=True)
-    # check_if_sudo_mode()
+    check_if_sudo_mode()
     print("\t\t[DONE!]")
 
     print("Reading parameters file...", end="", flush=True)
-    params = file_input("flaskapp.par")
+    params = file_input(deploy_file)
     print("\t\t[DONE!]")
 
     # Check ports redundancy
