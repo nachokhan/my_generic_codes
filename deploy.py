@@ -75,7 +75,7 @@ def file_input(file_name):
             continue
         elif line:
             # take tje key:value pair
-            key, value = line.split(":") or None
+            key, value = line.split(":", 1) or None
             key = key.strip()
             value = value.strip()
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         deploy_file = sys.argv[2]
 
     print("Checking sudo privileges...", end="", flush=True)
-    check_if_sudo_mode()
+    # check_if_sudo_mode()
     print("\t\t[DONE!]")
 
     print("Reading parameters file...", end="", flush=True)
@@ -136,19 +136,19 @@ if __name__ == "__main__":
     nginx_conf_file = nginx_folder + "nginx"
     final_nginx_conf_file = "/etc/nginx/sites-available/nginx"
     final_nginx_conf_file_link = "/etc/nginx/sites-enabled"
-    final_nginx_conf_file = "AAAA/nginx"
-    final_nginx_conf_file_link = "AAAA/link/nginx"
+    # final_nginx_conf_file = "AAAA/nginx"
+    # final_nginx_conf_file_link = "AAAA/link/nginx"
 
     # SUPERVISOR FILES
     supervisor_folder = folder + "supervisor/"
     supervisor_conf_file = supervisor_folder + app_name + ".conf"
     final_supervisor_conf_file = "/etc/supervisor/conf.d/" + app_name + ".conf"
-    final_supervisor_conf_file = "AAAA/" + app_name + ".conf"
+    # final_supervisor_conf_file = "AAAA/" + app_name + ".conf"
 
     # OTHER FILES
     wsgi_conf_file = folder + "/wsgi.py"
     final_wsgi_conf_file = params["base_dir"] + "/wsgi.py"
-    final_wsgi_conf_file = "AAAA" + "/wsgi.py"
+    # final_wsgi_conf_file = "AAAA" + "/wsgi.py"
 
     print("Creating project folders...", end="", flush=True)
     if os.path.isdir(folder):
