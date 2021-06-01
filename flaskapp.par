@@ -1,11 +1,32 @@
 #############################
 # Clicnkic Deployment conf. #
 #############################
+
+#framework is: flask | django
 framework: flask
+
+# coomonly refers to your app folder
 app_name: flaskapp
+
+# your base dir where "flaskapp" lives
 base_dir: /home/nacho/test/
-int_port: 5001
-ext_port: 8081
+
+# internal port where you want to run the app
+int_port: 5000
+
+# external port to be accessed
+ext_port: 80
+
+# workers = 3n + 1 (n = quantity of processors)
 workers : 3
+
+
+############################################
+#This 2 keys are only for FLASK projects:
+############################################
+
+# Name of the file (module) where the app object is
 app_module : flask_app
+
+# name of the "App" instantiation.
 app_object_name:  app
