@@ -1,0 +1,11 @@
+#############################
+# Clicnkic Deployment conf. #
+#############################
+framework:flask
+ app_name: clicknic
+ base_dir: /home/nacho/projects/
+ int_port: 5000
+ ext_port: 8080
+ workers : 3
+
+complete_useless_param : 8
