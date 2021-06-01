@@ -135,7 +135,7 @@ if __name__ == "__main__":
     nginx_folder = folder + "nginx/"
     nginx_conf_file = nginx_folder + "nginx"
     final_nginx_conf_file = "/etc/nginx/sites-available/nginx"
-    final_nginx_conf_file_link = "/etc/nginx/sites-enabled"
+    final_nginx_conf_file_link = "/etc/nginx/sites-enabled/nginx"
     # final_nginx_conf_file = "AAAA/nginx"
     # final_nginx_conf_file_link = "AAAA/link/nginx"
 
