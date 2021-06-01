@@ -23,23 +23,8 @@ def render_text(text_file, **kargs):
     return new_text
 
 
-def render_file(text_file, **kargs):
-    texto = render_text(text_file, kargs)
+def render_file(text_file, output_file, **kargs):
+    texto = render_text(text_file, **kargs)
 
-    app_name = kargs["app_name"]
-
-    file = text_file.split("/")[-1]
-    extension = file.split(".", 1)[1]
-
-    print(f"File: {file}")
-    print(f"extension: {extension}")
-
-    file_name = app_name
-
-    if extension:
-        file_name += "." + extension
-
-    print(f"File_nameeee: {file_name}")
-
-    with open(file_name, "w") as f:
+    with open(output_file, "w") as f:
         f.write(texto)

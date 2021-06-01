@@ -1,7 +1,7 @@
 # This file will be used for FLASK apps.
 # Because Django creates its own wsgi.py file
 
-from flask_app import app
+from {{app_module}} import {{app_object_name}} as application
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    application.run(debug=False)

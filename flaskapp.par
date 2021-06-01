@@ -1,0 +1,11 @@
+#############################
+# Clicnkic Deployment conf. #
+#############################
+framework: flask
+app_name: flaskapp
+base_dir: /home/nacho/test/
+int_port: 5001
+ext_port: 8081
+workers : 3
+app_module : flask_app
+app_object_name:  app
