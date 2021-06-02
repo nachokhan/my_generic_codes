@@ -112,6 +112,49 @@ def check_if_sudo_mode():
         exit()
 
 
+def undeploy(file_name):
+
+    app_name = None
+
+    with open(file_name, "r") as f:
+        lines = f.readlines()
+
+    for line in lines:
+        line = line.strip()        
+        if ':' in line and line[0] != '#':
+            key, value = line.split(":", 1)        
+            if key.strip() == "app_name":
+                app_name = value.strip()
+
+    if not app_name:
+        print("There is no APP_NAME in deploy file. Nothing to undeploy\n")
+        exit(1)
+
+    nginx_file = "/etc/nginx/sites-available/" + app_name
+    nginx_link = "/etc/nginx/sites-enabled/" + app_name
+    supervisor_file = "/etc/supervisor/conf.d/" + app_name + ".config"
+
+    print("Removing NGINX config file...", end="", flush=True),
+    os.system("sudo rm " + nginx_file)
+    print("\t[DONE!]")
+
+    print("Removing NGINX config link...", end="", flush=True),
+    os.system("sudo rm " + nginx_link)
+    print("\t[DONE!]")
+
+    print("Removing SuperVisor config file...", end="", flush=True),
+    os.system("sudo rm " + supervisor_file)
+    print("\t[DONE!]")
+
+    print("Restarting services...", end="", flush=True),
+    os.system("sudo systemctl restart nginx.service")
+    os.system("sudo nginx -t")
+    os.system("sudo supervisorctl reread")
+    os.system("sudo supervisorctl update")
+    os.system("sudo supervisorctl restart " + app_name)
+    print("\t[DONE!]")
+
+
 if __name__ == "__main__":
 
     deploy_file = None
@@ -124,12 +167,18 @@ if __name__ == "__main__":
         print("\nEx: sudo python deploy.sh -f my_app.deploy\n")
         exit(2)
 
-    elif sys.argv[1] == '-f':
-        deploy_file = sys.argv[2]
-    elif sys.argv[1] == '-w':
-        deploy_file = sys.argv[2]
+    option = sys.argv[1]
+    deploy_file = sys.argv[2]
+
+    if option == '-w':
+        print("\nGENERATE DEPLOY FILE\n")
         generate_deploy_file(deploy_file)
         print("\nDEPLOY FILE WAS GENERATED")
+        exit()
+    elif option == '-u':
+        print("\nUNDEPLOY PROJECT\n")
+        undeploy(deploy_file)
+        print("\nUndeployment finished!")
         exit()
 
     print("Checking sudo privileges...", end="", flush=True)
@@ -237,6 +286,14 @@ if __name__ == "__main__":
             print("Copying WSGI config file...", end="", flush=True),
             shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
             print("\t\t[DONE!]")
+
+        print("Restarting services...", end="", flush=True),
+        os.system("sudo systemctl restart nginx.service")
+        os.system("sudo nginx -t")
+        os.system("sudo supervisorctl reread")
+        os.system("sudo supervisorctl update")
+        print("\t[DONE!]")
+
     except Exception as e:
         print("\n\n-----------------------\nAn error ocurred:")
         if hasattr(e, 'message'):
