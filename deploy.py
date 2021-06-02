@@ -213,7 +213,7 @@ if __name__ == "__main__":
 
     # OTHER FILES
     wsgi_conf_file = folder + "/wsgi.py"
-    final_wsgi_conf_file = params["base_dir"] + "/wsgi.py"
+    final_wsgi_conf_file = params["base_dir"] + folder + "/wsgi.py"
     # final_wsgi_conf_file = "AAAA" + "/wsgi.py"
 
     print("Creating project folders...", end="", flush=True)
@@ -286,14 +286,6 @@ if __name__ == "__main__":
             shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
             print("\t\t[DONE!]")
 
-        print("Restarting services...", end="", flush=True),
-        os.system("sudo systemctl restart nginx.service")
-        os.system("sudo nginx -t")
-        os.system("sudo supervisorctl reread")
-        os.system("sudo supervisorctl update")
-        os.system("sudo supervisorctl restart " + app_name)
-        print("\t[DONE!]")
-
     except Exception as e:
         print("\n\n-----------------------\nAn error ocurred:")
         if hasattr(e, 'message'):
@@ -302,4 +294,11 @@ if __name__ == "__main__":
             print(e)
         print("-----------------------")
     finally:
+        print("Restarting services...\n", end="", flush=True),
+        os.system("sudo systemctl restart nginx.service")
+        os.system("sudo nginx -t")
+        os.system("sudo supervisorctl reread")
+        os.system("sudo supervisorctl update")
+        os.system("sudo supervisorctl restart " + app_name)
+        print("\t[DONE!]")
         say_bye()
