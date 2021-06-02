@@ -213,62 +213,63 @@ if __name__ == "__main__":
 
     # OTHER FILES
     wsgi_conf_file = folder + "/wsgi.py"
-    final_wsgi_conf_file = params["base_dir"] + folder + "/wsgi.py"
+    final_wsgi_conf_file = params["base_dir"] + folder + "wsgi.py"
     # final_wsgi_conf_file = "AAAA" + "/wsgi.py"
 
-    print("Creating project folders...", end="", flush=True)
-    if os.path.isdir(folder):
-        shutil.rmtree(folder)
-    os.mkdir(folder)
-    os.mkdir(nginx_folder)
-    os.mkdir(supervisor_folder)
-    print("\t\t[DONE!]")
+    try:
 
-    print("Creating NGINX config file...", end="", flush=True),
-    render_file(
-        NGINX_TEMPLATE_FILE,
-        output_file=nginx_conf_file,
-        app_name=params["app_name"],
-        app_base_dir=params["base_dir"],
-        internal_port=params["int_port"],
-        external_port=params["ext_port"],
-    )
-    print("\t\t[DONE!]")
+        print("Creating project folders...", end="", flush=True)
+        if os.path.isdir(folder):
+            shutil.rmtree(folder)
+        os.mkdir(folder)
+        os.mkdir(nginx_folder)
+        os.mkdir(supervisor_folder)
+        print("\t\t[DONE!]")
 
-    # Check which file to use depending on the framework
-    supervisor_file = None
-    if params["framework"] == "django":
-        supervisor_file = SUPERVISOR_DJANGO_TEMPLATE_FILE
-    elif params["framework"] == "flask":
-        supervisor_file = SUPERVISOR_FLASK_TEMPLATE_FILE
-
-    if not supervisor_file:
-        raise RuntimeError("The specified framework is not correct or no framework was specified")
-
-    print("Creating SuperVisor config file...", end="", flush=True),
-    render_file(
-        supervisor_file,
-        output_file=supervisor_conf_file,
-        app_name=params["app_name"],
-        app_base_dir=params["base_dir"],
-        internal_port=params["int_port"],
-        external_port=params["ext_port"],
-        workers_count=params["workers"],
-    )
-    print("\t[DONE!]")
-
-    if params["framework"] == "flask":
-        print("Creating Flask WSGI file...", end="", flush=True),
+        print("Creating NGINX config file...", end="", flush=True),
         render_file(
-            WSGI_FLASK_TEMPLATE_FILE,
-            output_file=wsgi_conf_file,
+            NGINX_TEMPLATE_FILE,
+            output_file=nginx_conf_file,
             app_name=params["app_name"],
-            app_module=params["app_module"],
-            app_object_name=params["app_object_name"],
+            app_base_dir=params["base_dir"],
+            internal_port=params["int_port"],
+            external_port=params["ext_port"],
         )
         print("\t\t[DONE!]")
 
-    try:
+        # Check which file to use depending on the framework
+        supervisor_file = None
+        if params["framework"] == "django":
+            supervisor_file = SUPERVISOR_DJANGO_TEMPLATE_FILE
+        elif params["framework"] == "flask":
+            supervisor_file = SUPERVISOR_FLASK_TEMPLATE_FILE
+
+        if not supervisor_file:
+            raise RuntimeError("The specified framework is not correct or no framework was specified")
+
+        print("Creating SuperVisor config file...", end="", flush=True),
+        render_file(
+            supervisor_file,
+            output_file=supervisor_conf_file,
+            app_name=params["app_name"],
+            app_base_dir=params["base_dir"],
+            internal_port=params["int_port"],
+            external_port=params["ext_port"],
+            workers_count=params["workers"],
+        )
+        print("\t[DONE!]")
+
+        if params["framework"] == "flask":
+            print("Creating Flask WSGI file...", end="", flush=True),
+            render_file(
+                WSGI_FLASK_TEMPLATE_FILE,
+                output_file=wsgi_conf_file,
+                app_name=params["app_name"],
+                app_module=params["app_module"],
+                app_object_name=params["app_object_name"],
+            )
+            print("\t\t[DONE!]")
+
         print("Copying NGINX config file...", end="", flush=True),
         shutil.copyfile(nginx_conf_file, final_nginx_conf_file)
         print("\t\t[DONE!]")
