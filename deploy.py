@@ -48,9 +48,9 @@ def say_bye():
     print("\nThanks for playing around with me. Sometimes I feel so alone :D\n")
 
 
-def console_input():
+def generate_deploy_file(file_name):
     parameters = {}
-    print("First step consist in asking some questions:")
+    print("You may need to answer some questions:")
     parameters["framework"] = input("- What is the framework of your pp? [django|flask]: ")
     parameters["app_name"] = input("- What is the name of your app? (no spaces): ")
     parameters["base_dir"] = input("- What is the base directory for your app (/ at the end): ")
@@ -58,7 +58,20 @@ def console_input():
     parameters["ext_port"] = input("- Which external port you want to use for your app: ")
     parameters["workers"] = input("- How many workers do you want to assign the supervisor: ")
 
-    return parameters
+    if parameters["framework"] == "flask":
+        parameters["app_module"] = input("- What is the name of the app modulo (only Flask): ")
+        parameters["app_object_name"] = input("- What is the name of the App object (only Flask): ")
+
+    texto = "############################\nDeployment File for " + parameters['app_name'] + "\n"
+    texto += "############################\n\n"
+
+    for key in parameters.keys():
+        texto += key + " : " + parameters[key] + '\n'
+
+    texto += "\n\n#################\n#END OF CONFIG FILE\n#################"
+
+    with open(file_name, "w") as f:
+        f.write(texto)
 
 
 def file_input(file_name):
@@ -111,8 +124,13 @@ if __name__ == "__main__":
         print("\nEx: sudo python deploy.sh -f my_app.deploy\n")
         exit(2)
 
-    else:
+    elif sys.argv[1] == '-f':
         deploy_file = sys.argv[2]
+    elif sys.argv[1] == '-w':
+        deploy_file = sys.argv[2]
+        generate_deploy_file(deploy_file)
+        print("\nDEPLOY FILE WAS GENERATED")
+        exit()
 
     print("Checking sudo privileges...", end="", flush=True)
     # check_if_sudo_mode()
