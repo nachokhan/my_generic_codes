@@ -301,6 +301,8 @@ if __name__ == "__main__":
         else:
             print(e)
         print("-----------------------")
+        print("\n\n UNDEPLOYING (Rollback).....", end="", flush=True)
         undeploy(deploy_file)
+        print("[DONE!]")
     finally:
         say_bye()
