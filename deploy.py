@@ -62,8 +62,9 @@ def generate_deploy_file(file_name):
         parameters["app_module"] = input("- What is the name of the app modulo (only Flask): ")
         parameters["app_object_name"] = input("- What is the name of the App object (only Flask): ")
 
-    texto = "############################\nDeployment File for " + parameters['app_name'] + "\n"
-    texto += "############################\n\n"
+    texto = "##########################################\n"
+    texto += "# Deployment File for " + parameters['app_name'] + "\n"
+    texto += "##########################################\n\n"
 
     for key in parameters.keys():
         texto += key + " : " + parameters[key] + '\n'
