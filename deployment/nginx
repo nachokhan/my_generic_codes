@@ -12,14 +12,14 @@ server {
         }
 
         location /static/ {
-        root {{app_base_dir}}{{app_name}}/;
-        add_header Pragma public;
-        add_header Cache-Control "public";
+                root {{app_base_dir}}{{app_name}}/;
+                add_header Pragma public;
+                add_header Cache-Control "public";
         }
 
         location /media/ {
-        root {{app_base_dir}}{{app_name}}/;
-        add_header Pragma public;
-        add_header Cache-Control "public";
-    }
+                root {{app_base_dir}}{{app_name}}/;
+                add_header Pragma public;
+                add_header Cache-Control "public";
+        }
 }
