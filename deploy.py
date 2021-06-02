@@ -151,7 +151,6 @@ def undeploy(file_name):
     os.system("sudo nginx -t")
     os.system("sudo supervisorctl reread")
     os.system("sudo supervisorctl update")
-    os.system("sudo supervisorctl restart " + app_name)
     print("\t[DONE!]")
 
 
@@ -292,6 +291,7 @@ if __name__ == "__main__":
         os.system("sudo nginx -t")
         os.system("sudo supervisorctl reread")
         os.system("sudo supervisorctl update")
+        os.system("sudo supervisorctl restart " + app_name)
         print("\t[DONE!]")
 
     except Exception as e:
