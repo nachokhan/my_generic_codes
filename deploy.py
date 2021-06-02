@@ -132,7 +132,7 @@ def undeploy(file_name):
 
     nginx_file = "/etc/nginx/sites-available/" + app_name
     nginx_link = "/etc/nginx/sites-enabled/" + app_name
-    supervisor_file = "/etc/supervisor/conf.d/" + app_name + ".config"
+    supervisor_file = "/etc/supervisor/conf.d/" + app_name + ".conf"
 
     print("\nRemoving NGINX config file...", end="", flush=True),
     os.system("sudo rm " + nginx_file)
@@ -202,19 +202,16 @@ if __name__ == "__main__":
     nginx_conf_file = nginx_folder + app_name
     final_nginx_conf_file = "/etc/nginx/sites-available/" + app_name
     final_nginx_conf_file_link = "/etc/nginx/sites-enabled/" + app_name
-    # final_nginx_conf_file = "AAAA/nginx"
-    # final_nginx_conf_file_link = "AAAA/link/nginx"
+
 
     # SUPERVISOR FILES
     supervisor_folder = folder + "supervisor/"
     supervisor_conf_file = supervisor_folder + app_name + ".conf"
     final_supervisor_conf_file = "/etc/supervisor/conf.d/" + app_name + ".conf"
-    # final_supervisor_conf_file = "AAAA/" + app_name + ".conf"
 
     # OTHER FILES
     wsgi_conf_file = folder + "/wsgi.py"
-    final_wsgi_conf_file = params["base_dir"] + folder + "wsgi.py"
-    # final_wsgi_conf_file = "AAAA" + "/wsgi.py"
+    final_wsgi_conf_file = params["base_dir"] + app_name + "/wsgi.py"
 
     try:
 
