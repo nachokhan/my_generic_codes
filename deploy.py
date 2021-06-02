@@ -120,33 +120,33 @@ def undeploy(file_name):
         lines = f.readlines()
 
     for line in lines:
-        line = line.strip()        
+        line = line.strip()
         if ':' in line and line[0] != '#':
-            key, value = line.split(":", 1)        
+            key, value = line.split(":", 1)
             if key.strip() == "app_name":
                 app_name = value.strip()
 
     if not app_name:
-        print("There is no APP_NAME in deploy file. Nothing to undeploy\n")
+        print("\nThere is no APP_NAME in deploy file. Nothing to undeploy\n")
         exit(1)
 
     nginx_file = "/etc/nginx/sites-available/" + app_name
     nginx_link = "/etc/nginx/sites-enabled/" + app_name
     supervisor_file = "/etc/supervisor/conf.d/" + app_name + ".config"
 
-    print("Removing NGINX config file...", end="", flush=True),
+    print("\nRemoving NGINX config file...", end="", flush=True),
     os.system("sudo rm " + nginx_file)
     print("\t[DONE!]")
 
-    print("Removing NGINX config link...", end="", flush=True),
+    print("\nRemoving NGINX config link...", end="", flush=True),
     os.system("sudo rm " + nginx_link)
     print("\t[DONE!]")
 
-    print("Removing SuperVisor config file...", end="", flush=True),
+    print("\nRemoving SuperVisor config file...", end="", flush=True),
     os.system("sudo rm " + supervisor_file)
     print("\t[DONE!]")
 
-    print("Restarting services...", end="", flush=True),
+    print("\nRestarting services...", end="", flush=True),
     os.system("sudo systemctl restart nginx.service")
     os.system("sudo nginx -t")
     os.system("sudo supervisorctl reread")
