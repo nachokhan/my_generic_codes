@@ -281,6 +281,8 @@ if __name__ == "__main__":
 
         if params["framework"] == "flask":
             print("Copying WSGI config file...", end="", flush=True),
+            if os.isfile(final_wsgi_conf_file):
+                os.remove(final_wsgi_conf_file)
             shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
             print("\t\t[DONE!]")
 
