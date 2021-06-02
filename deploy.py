@@ -286,14 +286,6 @@ if __name__ == "__main__":
             shutil.copyfile(wsgi_conf_file, final_wsgi_conf_file)
             print("\t\t[DONE!]")
 
-    except Exception as e:
-        print("\n\n-----------------------\nAn error ocurred:")
-        if hasattr(e, 'message'):
-            print(e.message)
-        else:
-            print(e)
-        print("-----------------------")
-    finally:
         print("Restarting services...\n", end="", flush=True),
         os.system("sudo systemctl restart nginx.service")
         os.system("sudo nginx -t")
@@ -301,4 +293,14 @@ if __name__ == "__main__":
         os.system("sudo supervisorctl update")
         os.system("sudo supervisorctl restart " + app_name)
         print("\t[DONE!]")
+
+    except Exception as e:
+        print("\n\n-----------------------\nAn error ocurred:")
+        if hasattr(e, 'message'):
+            print(e.message)
+        else:
+            print(e)
+        print("-----------------------")
+        undeploy(deploy_file)
+    finally:
         say_bye()
