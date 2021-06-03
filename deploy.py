@@ -35,16 +35,12 @@ def welcome():
 
 def say_bye():
     print("\nDon't go! I'd like to give you some tips....")
-    print("\t- Remember to have installed gunicorn inside your env project")
+    print("\t- Remember to have installed gunicorn inside your virtual environment")
     print("\t- Remember to have installed SuperVisor")
     print("\t- Remember to have installed nginx")
     print("\t- Please check that port " + params["ext_port"] + " is open")
-    print("\t- Remember to restart nginx:")
-    print("\t\t 1) sudo systemctl restart nginx.system")
-    print("\t- Remember to update&restart supervisor:")
-    print("\t\t 1) sudo supervisorctl reread")
-    print("\t\t 2) sudo supervisorctl update")
-    print("\t\t 3) sudo supervisorctl restart all")
+    print("\t- Please check that port " + params["ext_port"] + " is not being used for another app")
+    print("\t- Please check that port " + params["int_port"] + " is not being used for another app")
     print("\nThanks for playing around with me. Sometimes I feel so alone :D\n")
 
 
@@ -163,8 +159,11 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 3:
         print("Incorrect number of parameters. Use:")
-        print("\nsudo python deploy.sh -f <deply_config_file>")
-        print("\nEx: sudo python deploy.sh -f my_app.deploy\n")
+        print("\nsudo python deploy.sh:")
+        print("\t-f <deploy_config_file> ---> deploy a project")
+        print("\t-w <deploy_config_file> ---> generate a deploy file for a project")
+        print("\t-u <deploy_config_file> ---> to un-deploy a project (rollback a deployment)")
+        print("\n\n")
         exit(2)
 
     option = sys.argv[1]
@@ -177,12 +176,13 @@ if __name__ == "__main__":
         exit()
     elif option == '-u':
         print("\nUNDEPLOY PROJECT\n")
+        check_if_sudo_mode()
         undeploy(deploy_file)
         print("\nUndeployment finished!")
         exit()
 
     print("Checking sudo privileges...", end="", flush=True)
-    # check_if_sudo_mode()
+    check_if_sudo_mode()
     print("\t\t[DONE!]")
 
     print("Reading parameters file...", end="", flush=True)
