@@ -160,8 +160,8 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Incorrect number of parameters. Use:")
         print("\nsudo python deploy.sh:")
-        print("\t-f <deploy_config_file> ---> deploy a project")
-        print("\t-w <deploy_config_file> ---> generate a deploy file for a project")
+        print("\t-w <deploy_config_file> ---> to generate a deploy-file for a project")
+        print("\t-f <deploy_config_file> ---> to deploy a project from deploy-file")        
         print("\t-u <deploy_config_file> ---> to un-deploy a project (rollback a deployment)")
         print("\n\n")
         exit(2)
