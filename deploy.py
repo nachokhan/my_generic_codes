@@ -5,7 +5,7 @@
 import os
 import sys
 import shutil
-from utils.gernerics import render_file
+from utils.generics import render_file
 
 NGINX_TEMPLATE_FILE = "deployment/nginx"
 SUPERVISOR_FLASK_TEMPLATE_FILE = "deployment/flask_supervisor.conf"
